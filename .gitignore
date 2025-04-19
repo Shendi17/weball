@@ -1,0 +1,39 @@
+# === Fichiers & dossiers à ignorer pour WebAll ===
+# Logs et fichiers volumineux
+logs/
+*.log
+*.log.*
+
+# Bases de données temporaires/locales
+*.sqlite
+*.db
+*.db3
+*.sql
+
+# Fichiers de sessions/cache
+cache/
+sessions/
+*.tmp
+*.bak
+
+# Dépendances locales ou générées
+/vendor/
+/node_modules/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Dossiers de build ou temporaires
+/build/
+/dist/
+
+# Fichiers sensibles
+config.db.php
+.env
+.env.*
+
+# Exemples spécifiques
+storage/
+archivage_modules.ps1
+Amélios
