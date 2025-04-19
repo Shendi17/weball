@@ -1,0 +1,14 @@
+{
+    "name": "weballone/wao",
+    "description": "WebAllOne Application",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Core\\": "src/Core/"
+        }
+    },
+    "require": {
+        "php": ">=7.4"
+    }
+}

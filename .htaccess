@@ -1,0 +1,83 @@
+Options -MultiViews -Indexes
+RewriteEngine On
+RewriteBase /weball/
+
+# Redirections des anciennes URLs vers les nouveaux modules
+RewriteRule ^annuaire\.php$ resources/modules/annuaire/index.php [L]
+RewriteRule ^personnalite\.php$ resources/modules/personnalite/index.php [L]
+RewriteRule ^autorite\.php$ resources/modules/autorite/index.php [L]
+RewriteRule ^entite\.php$ resources/modules/entite/index.php [L]
+RewriteRule ^localite\.php$ resources/modules/localite/index.php [L]
+RewriteRule ^banque\.php$ resources/modules/banque/index.php [L]
+RewriteRule ^cadran\.php$ resources/modules/cadran/index.php [L]
+RewriteRule ^ecran\.php$ resources/modules/ecran/index.php [L]
+RewriteRule ^instrument\.php$ resources/modules/instrument/index.php [L]
+RewriteRule ^office\.php$ resources/modules/office/index.php [L]
+RewriteRule ^plateforme\.php$ resources/modules/plateforme/index.php [L]
+RewriteRule ^reseau\.php$ resources/modules/reseau/index.php [L]
+RewriteRule ^journal\.php$ resources/modules/journal/index.php [L]
+# Redirection de /login vers /login.php
+RewriteRule ^login$ login.php [L]
+# Ajoute ici d'autres règles si d'autres modules ont migré !
+
+# Interdire l'accès direct aux fichiers PHP dans /templates
+RewriteRule ^templates/.*\.php$ - [F,L]
+
+# Autoriser l'accès direct aux fichiers statiques (js, css, images, etc.)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Autoriser l'accès direct aux fichiers existants
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rediriger toutes les autres requêtes vers index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Redirection des erreurs vers des pages personnalisées
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Protection du fichier .htaccess
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Compression GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule>
+
+# Cache Control
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType text/html "access plus 1 minute"
+</IfModule>
+
+# Sécurité
+ServerSignature Off
+
+# Headers CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+    Header set Access-Control-Allow-Headers "*"
+</IfModule>

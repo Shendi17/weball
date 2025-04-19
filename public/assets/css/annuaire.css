@@ -1,0 +1,59 @@
+.annuaire-list {
+    margin: 2.5em auto 2em auto;
+    max-width: 650px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(44,62,80,0.08);
+    padding: 2em 2em 1.5em 2em;
+}
+.annuaire-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222c36;
+    margin-bottom: 1.2em;
+    text-align: center;
+}
+.annuaire-entries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.annuaire-entry {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding: 1em 0.5em;
+    border-bottom: 1px solid #e5e9f2;
+    font-size: 1.1em;
+}
+.annuaire-entry:last-child {
+    border-bottom: none;
+}
+.annuaire-entry .fa {
+    color: #00c2ff;
+    font-size: 1.4em;
+    width: 32px;
+    text-align: center;
+}
+.entry-nom {
+    font-weight: 500;
+    color: #222c36;
+}
+.entry-type {
+    color: #7b8ba7;
+    font-size: 0.97em;
+    margin-left: 0.5em;
+}
+.entry-localite {
+    color: #7c3aed;
+    margin-left: 0.7em;
+    font-size: 0.97em;
+}
+@media (max-width: 700px) {
+    .annuaire-list {
+        padding: 1.2em 0.5em 1em 0.5em;
+    }
+    .annuaire-title {
+        font-size: 1.3rem;
+    }
+}

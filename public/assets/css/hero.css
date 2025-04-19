@@ -1,0 +1,148 @@
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 420px;
+    background: linear-gradient(100deg, #2d7ff9 0%, #7c3aed 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 64px;
+}
+.hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('/weball/assets/img/hero-bg.svg') center/cover no-repeat;
+    opacity: 0.17;
+    z-index: 1;
+}
+.hero-content {
+    z-index: 2;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.hero-title {
+    font-size: 2.8rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.7em;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #e3e9f3;
+    margin-bottom: 1.2em;
+    text-align: center;
+    opacity: 0.92;
+}
+.hero-links {
+    margin-bottom: 2em;
+    display: flex;
+    gap: 1.5em;
+    justify-content: center;
+}
+.hero-link {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-weight: 500;
+    padding: 0.6em 1.4em;
+    border-radius: 16px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.7em;
+    transition: background 0.18s, color 0.18s;
+    text-decoration: none;
+}
+.hero-link:hover {
+    background: #fff;
+    color: #7c3aed;
+}
+.hero-content .search-box {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(44,62,80,0.09);
+    padding: 1.1em 2em;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 0;
+}
+.hero-content .search-box input[type="text"] {
+    border: none;
+    outline: none;
+    font-size: 1.18em;
+    flex: 1;
+    background: transparent;
+    color: #2c3e50;
+    padding: 0.6em 0.5em;
+}
+.hero-content .search-box .btn {
+    background: #222c36;
+    color: #fff;
+    border-radius: 16px;
+    padding: 0.7em 1.5em;
+    border: none;
+    font-weight: 600;
+    font-size: 1em;
+    margin-left: 1em;
+    transition: background 0.15s;
+    box-shadow: 0 2px 8px rgba(34,44,54,0.09);
+}
+.hero-content .search-box .btn:hover {
+    background: #00c2ff;
+    color: #fff;
+}
+.hero-content .search-box .filter-btn {
+    background: #e5e9f2;
+    color: #2c3e50;
+    border-radius: 14px;
+    padding: 0.7em 1.2em;
+    border: none;
+    margin-right: 1em;
+    font-weight: 500;
+    font-size: 1em;
+    transition: background 0.15s;
+}
+.hero-content .search-box .filter-btn:hover {
+    background: #00c2ff;
+    color: #fff;
+}
+.hero-wave {
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    width: 100%;
+    z-index: 3;
+    line-height: 0;
+}
+.hero-wave svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+}
+@media (max-width: 900px) {
+    .hero-content .search-box {
+        flex-direction: column;
+        gap: 1em;
+        padding: 1em 0.6em;
+    }
+    .hero-content .search-box .btn,
+    .hero-content .search-box .filter-btn {
+        width: 100%;
+        margin: 0;
+    }
+    .hero-content {
+        padding: 1.5rem 0.2rem 1rem 0.2rem;
+    }
+    .hero-title {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,182 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(180deg, #2d7ff9 0%, #7c3aed 100%) fixed !important;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Transitions */
+.sidebar,
+.main-header,
+.main-content,
+.site-title,
+.sidebar-nav span,
+.alert {
+    transition: all 0.3s ease;
+}
+
+/* Sidebar modernisée */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 235px;
+    height: 100vh;
+    background: #222c36;
+    color: #e3e9f3;
+    font-size: 14px;
+    box-shadow: 2px 0 14px rgba(34,44,54,0.08);
+    z-index: 1000;
+    padding-top: 0;
+    font-size: 14px;
+}
+
+/* --- SIDEBAR COLLAPSED MODERNE --- */
+.sidebar.collapsed {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    background: #1a222b;
+    box-shadow: 2px 0 12px rgba(34,44,54,0.10);
+    overflow-x: visible;
+    border-right: 1px solid #222c36;
+    transition: width 0.2s, background 0.2s;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+    height: 100vh !important;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+.sidebar.collapsed::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Webkit */
+}
+
+.sidebar.collapsed .sidebar-header,
+.sidebar.collapsed .site-title,
+.sidebar.collapsed .site-desc,
+.sidebar.collapsed .sidebar-user,
+.sidebar.collapsed .sidebar-group span,
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .cart-badge,
+.sidebar.collapsed .badge-sidebar {
+    display: none !important;
+}
+
+.sidebar.collapsed .nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar.collapsed .nav-link, .sidebar.collapsed .nav-item {
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+}
+
+.sidebar.collapsed .nav-link {
+    min-height: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.sidebar.collapsed .nav-item {
+    min-height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+}
+
+/* Centrage robuste des icônes sidebar rétractée - structure HTML analysée */
+.sidebar.collapsed .nav-link {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 48px !important;
+    min-width: 48px !important;
+    max-width: 48px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+.sidebar.collapsed .nav-link > *:not(i):not(.fa) {
+    display: none !important;
+}
+.sidebar.collapsed .nav-link .fa,
+.sidebar.collapsed .nav-link i {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin: 0 !important;
+    font-size: 1em !important;
+}
+
+/* Amélioration visibilité des icônes sidebar rétractée */
+.sidebar.collapsed .nav-link .fa,
+.sidebar.collapsed .nav-link i {
+    font-size: 1em !important;
+    color: #fff !important;
+    text-shadow: 0 2px 8px #22c3ff, 0 0 3px #000a;
+    filter: drop-shadow(0 0 2px #22c3ff) drop-shadow(0 0 2px #000a);
+    transition: color 0.18s, text-shadow 0.18s;
+}
+
+.sidebar.collapsed .nav-link:hover .fa,
+.sidebar.collapsed .nav-link:hover i {
+    color: #22c3ff !important;
+    text-shadow: 0 0 8px #22c3ff, 0 0 4px #fff;
+}
+
+/* Masquage universel du texte dans la sidebar rétractée */
+.sidebar.collapsed .nav-link {
+    color: transparent !important;
+    text-shadow: none !important;
+    position: relative;
+}
+.sidebar.collapsed .nav-link .fa,
+.sidebar.collapsed .nav-link i {
+    position: relative;
+    z-index: 2;
+}
+.sidebar.collapsed .nav-link *:not(i):not(.fa) {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .sidebar.collapsed {
+        transform: none !important;
+    }
+}
+
+/* ... (le reste du contenu CSS tel qu'avant, y compris les règles responsive, etc.) ... */
