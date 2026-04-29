@@ -8,10 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = trim($_POST['password'] ?? '');
     // À adapter selon ta logique d'authentification réelle !
-    if ($username === 'admin' && $password === 'admin') {
+    if (($username === 'admin' && $password === 'admin') || 
+        ($username === 'admin@weball.com' && $password === 'admin123')) {
         $_SESSION['user_id'] = 1;
         $_SESSION['username'] = 'admin';
-        header('Location: ' . BASE_PATH . '/resources/modules/annuaire/index.php');
+        $_SESSION['user_role'] = 'admin';
+        
+        // Rediriger vers la page demandée ou la page de sync par défaut
+        $redirect = $_GET['redirect'] ?? '/pages/sync_admin.php';
+        header('Location: ' . $redirect);
         exit;
     } else {
         $error = "Identifiants incorrects.";

@@ -13,26 +13,27 @@ $derniers = [
 ];
 ?>
 <div class="home-widgets">
-    <div class="widgets-row">
-        <div class="widget">
+    <h2 class="widgets-title">Découvrir</h2>
+    <div class="widgets-row widgets-stats">
+        <div class="widget stat">
             <div class="widget-label">Utilisateurs</div>
             <div class="widget-value"><?= $stats['utilisateurs'] ?></div>
         </div>
-        <div class="widget">
+        <div class="widget stat">
             <div class="widget-label">Marchés</div>
             <div class="widget-value"><?= $stats['marches'] ?></div>
         </div>
-        <div class="widget">
+        <div class="widget stat">
             <div class="widget-label">Personnalités</div>
             <div class="widget-value"><?= $stats['personnalites'] ?></div>
         </div>
     </div>
-    <div class="widgets-row">
+    <div class="widgets-row widgets-latest">
         <div class="widget-list">
             <div class="widget-label">Derniers ajouts</div>
-            <ul>
+            <ul class="latest-list">
                 <?php foreach($derniers as $d): ?>
-                    <li><b><?= htmlspecialchars($d['type']) ?></b> : <?= htmlspecialchars($d['nom']) ?></li>
+                    <li><span class="latest-type"><b><?= htmlspecialchars($d['type']) ?></b></span> : <span class="latest-nom"><?= htmlspecialchars($d['nom']) ?></span></li>
                 <?php endforeach; ?>
             </ul>
         </div>

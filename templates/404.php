@@ -7,5 +7,5 @@ require_once __DIR__ . '/../includes/template.php';
     <h1 class="display-1">404</h1>
     <h2>Page non trouvée</h2>
     <p class="lead">La page que vous recherchez n'existe pas ou a été déplacée.</p>
-    <a href="/weball/" class="btn btn-primary">Retour à l'accueil</a>
+    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
 </div>

@@ -3,7 +3,8 @@
  * Configuration et connexion à la base de données
  */
 
-require_once __DIR__ . '/../config.db.php';
+// Utiliser la configuration corrigée
+require_once __DIR__ . '/../config/database.php';
 $pdo = getPDO();
 
 try {

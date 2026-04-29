@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360">
+  <g>
+    <circle cx="180" cy="180" r="178" fill="none" stroke="red" stroke-width="2"/>
+    <polygon points="180,36 218,133 324,133 238,196 274,293 180,232 86,293 122,196 36,133 142,133" fill="none" stroke="orange" stroke-width="16"/>
+    <polygon points="180,324 142,227 36,227 122,164 86,67 180,128 274,67 238,164 324,227 218,227" fill="none" stroke="orange" stroke-width="16"/>
+  </g>
+</svg>

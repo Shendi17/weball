@@ -1,14 +1,15 @@
 // Attendre que le DOM soit complètement chargé
 document.addEventListener('DOMContentLoaded', function() {
     // Gestion du toggle sidebar
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.getElementById('sidebar');
-
-    if (sidebarToggle && sidebar) {
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-        });
-    }
+    // (Désactivé ici pour éviter conflit avec main-assets.js)
+    // const sidebarToggle = document.getElementById('sidebar-toggle');
+    // const sidebar = document.getElementById('sidebar');
+    //
+    // if (sidebarToggle && sidebar) {
+    //     sidebarToggle.addEventListener('click', function() {
+    //         sidebar.classList.toggle('collapsed');
+    //     });
+    // }
 
     // Gestion du menu utilisateur
     const userMenuBtn = document.querySelector('.user-menu-btn');

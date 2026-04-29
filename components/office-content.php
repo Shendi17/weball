@@ -1,6 +1,6 @@
 <?php
 // Composant dynamique : office (exemple)
-offices = [
+$offices = [
     ['nom' => 'Bureau Central', 'ville' => 'Paris'],
     ['nom' => 'Agence Sud', 'ville' => 'Marseille'],
 ];

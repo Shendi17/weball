@@ -34,9 +34,18 @@ body {
     color: #e3e9f3;
     font-size: 14px;
     box-shadow: 2px 0 14px rgba(34,44,54,0.08);
-    z-index: 1000;
+    z-index: 1100 !important;
     padding-top: 0;
     font-size: 14px;
+    overflow-y: auto !important;
+    scrollbar-width: thin;
+    -ms-overflow-style: auto;
+}
+
+.sidebar-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- SIDEBAR COLLAPSED MODERNE --- */
@@ -173,10 +182,87 @@ body {
     display: none !important;
 }
 
+/* Sidebar ouverte temporairement au hover (mode collapsed uniquement) */
+.sidebar.collapsed.sidebar-hover {
+    width: 235px !important;
+    min-width: 235px !important;
+    max-width: 235px !important;
+    background: #222c36 !important;
+    box-shadow: 2px 0 14px rgba(34,44,54,0.08);
+    overflow-x: visible;
+    border-right: 1px solid #222c36;
+}
+.sidebar.collapsed.sidebar-hover .sidebar-header,
+.sidebar.collapsed.sidebar-hover .site-title,
+.sidebar.collapsed.sidebar-hover .site-desc,
+.sidebar.collapsed.sidebar-hover .sidebar-user,
+.sidebar.collapsed.sidebar-hover .sidebar-group span,
+.sidebar.collapsed.sidebar-hover .nav-link span,
+.sidebar.collapsed.sidebar-hover .cart-badge,
+.sidebar.collapsed.sidebar-hover .badge-sidebar {
+    display: initial !important;
+}
+.sidebar.collapsed.sidebar-hover .nav {
+    width: 100%;
+}
+.sidebar.collapsed.sidebar-hover .nav-link, .sidebar.collapsed.sidebar-hover .nav-item {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Contenu principal masqué/blur quand sidebar ouverte au hover */
+.main-content.sidebar-hovering {
+    filter: blur(2px) grayscale(0.4);
+    pointer-events: none;
+    user-select: none;
+    transition: filter 0.2s;
+}
+
+/* S'assurer que la sidebar est toujours au-dessus du header */
+.sidebar {
+    z-index: 1100 !important;
+}
+
+/* S'assurer que le header ne passe jamais devant la sidebar */
+.main-header {
+    z-index: 1000 !important;
+}
+
+/* Décale le header pour qu'il commence après la sidebar */
+.main-header {
+    margin-left: 235px;
+    width: calc(100% - 235px);
+    box-sizing: border-box;
+}
+.main-header.sidebar-collapsed {
+    margin-left: 48px;
+    width: calc(100% - 48px);
+}
+
+/* Pour le contenu principal aussi */
+.main-content {
+    margin-left: 235px;
+    width: calc(100% - 235px);
+    box-sizing: border-box;
+}
+.main-content.sidebar-collapsed {
+    margin-left: 48px;
+    width: calc(100% - 48px);
+}
+
 @media (max-width: 768px) {
     .sidebar.collapsed {
         transform: none !important;
     }
+}
+
+/* Garder le header de la sidebar sticky en haut */
+.sidebar-header {
+    position: sticky;
+    top: 0;
+    background: inherit;
+    z-index: 2;
 }
 
 /* ... (le reste du contenu CSS tel qu'avant, y compris les règles responsive, etc.) ... */

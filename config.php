@@ -1,10 +1,9 @@
 <?php
 // Configuration de base
-require_once __DIR__ . '/config.db.php';
+require_once __DIR__ . '/config/database.php';
 if (!defined('BASE_PATH')) {
-    $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
-    $baseDir = ($scriptDir === '/') ? '' : $scriptDir;
-    define('BASE_PATH', $baseDir);
+    // Pour weball.local, BASE_PATH est vide (racine du domaine)
+    define('BASE_PATH', '');
 }
 if (!defined('ROOT_PATH')) define('ROOT_PATH', __DIR__);
 

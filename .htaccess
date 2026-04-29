@@ -1,36 +1,55 @@
-Options -MultiViews -Indexes
+# .htaccess simplifié pour WebAll
 RewriteEngine On
-RewriteBase /weball/
+RewriteBase /
 
-# Redirections des anciennes URLs vers les nouveaux modules
-RewriteRule ^annuaire\.php$ resources/modules/annuaire/index.php [L]
-RewriteRule ^personnalite\.php$ resources/modules/personnalite/index.php [L]
-RewriteRule ^autorite\.php$ resources/modules/autorite/index.php [L]
-RewriteRule ^entite\.php$ resources/modules/entite/index.php [L]
-RewriteRule ^localite\.php$ resources/modules/localite/index.php [L]
-RewriteRule ^banque\.php$ resources/modules/banque/index.php [L]
-RewriteRule ^cadran\.php$ resources/modules/cadran/index.php [L]
-RewriteRule ^ecran\.php$ resources/modules/ecran/index.php [L]
-RewriteRule ^instrument\.php$ resources/modules/instrument/index.php [L]
-RewriteRule ^office\.php$ resources/modules/office/index.php [L]
-RewriteRule ^plateforme\.php$ resources/modules/plateforme/index.php [L]
-RewriteRule ^reseau\.php$ resources/modules/reseau/index.php [L]
-RewriteRule ^journal\.php$ resources/modules/journal/index.php [L]
+# 1. Autoriser TOUS les fichiers PHP à la racine (pour test)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} \.php$
+RewriteRule ^ - [L]
+
+# 2. Autoriser tous les fichiers statiques existants
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# 3. Rediriger tout le reste vers index.php
+RewriteRule ^annuaire\.php$ pages/annuaire.php [L]
+RewriteRule ^personnalite\.php$ pages/personnalite.php [L]
+RewriteRule ^autorite\.php$ pages/autorite.php [L]
+RewriteRule ^entite\.php$ pages/entite.php [L]
+RewriteRule ^localite\.php$ pages/localite.php [L]
+RewriteRule ^banque\.php$ pages/banque.php [L]
+RewriteRule ^cadran\.php$ pages/cadran.php [L]
+RewriteRule ^ecran\.php$ pages/ecran.php [L]
+RewriteRule ^instrument\.php$ pages/instrument.php [L]
+RewriteRule ^office\.php$ pages/office.php [L]
+RewriteRule ^reseau\.php$ pages/reseau.php [L]
+RewriteRule ^journal\.php$ pages/journal.php [L]
+RewriteRule ^publication\.php$ pages/publication.php [L]
+RewriteRule ^archive\.php$ pages/archive.php [L]
+RewriteRule ^media\.php$ pages/media.php [L]
+RewriteRule ^formation\.php$ pages/formation.php [L]
+RewriteRule ^annonce\.php$ pages/annonce.php [L]
+RewriteRule ^catalogue\.php$ pages/catalogue.php [L]
+RewriteRule ^boutique\.php$ pages/boutique.php [L]
+RewriteRule ^adhesion\.php$ pages/adhesion.php [L]
+RewriteRule ^projet\.php$ pages/projet.php [L]
+RewriteRule ^carriere\.php$ pages/carriere.php [L]
+RewriteRule ^discipline\.php$ pages/discipline.php [L]
+RewriteRule ^concours\.php$ pages/concours.php [L]
+RewriteRule ^campagne\.php$ pages/campagne.php [L]
 # Redirection de /login vers /login.php
 RewriteRule ^login$ login.php [L]
-# Ajoute ici d'autres règles si d'autres modules ont migré !
 
 # Interdire l'accès direct aux fichiers PHP dans /templates
 RewriteRule ^templates/.*\.php$ - [F,L]
 
-# Autoriser l'accès direct aux fichiers statiques (js, css, images, etc.)
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
+# Autoriser l'accès direct aux fichiers existants (fichiers statiques)
+RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
 
-# Autoriser l'accès direct aux fichiers existants
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Autoriser l'accès direct aux répertoires existants
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
 # Rediriger toutes les autres requêtes vers index.php
 RewriteRule ^(.*)$ index.php [QSA,L]

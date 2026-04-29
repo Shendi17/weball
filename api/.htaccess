@@ -1,0 +1,15 @@
+# Protection du dossier API
+# Seules les requêtes authentifiées peuvent accéder aux endpoints
+
+<Files "*.php">
+    # Autoriser l'accès (la vérification se fait dans chaque fichier PHP)
+    Require all granted
+</Files>
+
+# Empêcher la navigation dans le dossier
+Options -Indexes
+
+# Forcer HTTPS (optionnel, décommenter si nécessaire)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

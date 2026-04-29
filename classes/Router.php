@@ -30,10 +30,34 @@ class Router {
                 'title' => 'Recherche magasin'
             ],
             
-            // Routes de l'annuaire
+            // Nouvelles routes pages principales (migration)
+            'home' => [
+                'file' => '/pages/home.php',
+                'title' => 'Accueil'
+            ],
             'annuaire' => [
-                'file' => '/modules/annuaire/index.php',
+                'file' => '/pages/annuaire.php',
                 'title' => 'Annuaire'
+            ],
+            'autorite' => [
+                'file' => '/pages/autorite.php',
+                'title' => 'Autorité'
+            ],
+            'cadran' => [
+                'file' => '/pages/cadran.php',
+                'title' => 'Cadran'
+            ],
+            'banque' => [
+                'file' => '/pages/banque.php',
+                'title' => 'Banque'
+            ],
+            'ecran' => [
+                'file' => '/pages/ecran.php',
+                'title' => 'Ecran'
+            ],
+            'registre' => [
+                'file' => '/pages/registre.php',
+                'title' => 'Registre'
             ],
             
             // Routes des outils
@@ -49,7 +73,7 @@ class Router {
             ],
             
             // Routes du registre
-            'registre' => [
+            'registre-old' => [
                 'file' => '/modules/registre/index.php',
                 'title' => 'Registre'
             ],

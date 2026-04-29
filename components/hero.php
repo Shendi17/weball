@@ -10,7 +10,7 @@
             <a href="#" class="hero-link"><i class="fas fa-store"></i> MARCHE</a>
             <a href="#" class="hero-link"><i class="fas fa-user"></i> Personnalité</a>
         </div>
-        <form class="search-box" method="get" action="/weball/annuaire">
+        <form class="search-box" method="get" action="/annuaire">
             <input type="text" name="q" placeholder="Rechercher un marché" autocomplete="off" />
             <button type="button" class="filter-btn"> <i class="fas fa-filter"></i> Plus De Filtres</button>
             <button type="submit" class="btn"> <i class="fas fa-search"></i> Rechercher</button>
