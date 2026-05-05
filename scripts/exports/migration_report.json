@@ -1,0 +1,15 @@
+{
+    "date": "2026-05-05 07:33:27",
+    "tables_count": 84,
+    "personalities_count": 71,
+    "authorities_count": 29,
+    "users_count": 1,
+    "exported_files": [
+        "structure.sql",
+        "personalities_data.sql",
+        "authorities_data.sql",
+        "types_categories.sql",
+        "users_data.sql",
+        "import_complete.php"
+    ]
+}
