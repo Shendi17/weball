@@ -196,11 +196,22 @@
                                                     // Afficher logo (pour autorité) ou photo (pour personnalité)
                                                     $imageUrl = $item['logo'] ?? $item['photo'] ?? null;
                                                     if (!empty($imageUrl)): 
+                                                        // Gérer les URLs externes et les chemins locaux
+                                                        if (strpos($imageUrl, 'http://') === 0 || strpos($imageUrl, 'https://') === 0) {
+                                                            $finalImageUrl = $imageUrl;
+                                                        } else {
+                                                            // Chemin local - ajouter /public si nécessaire
+                                                            $finalImageUrl = (strpos($imageUrl, '/public/') === 0) ? $imageUrl : '/public' . $imageUrl;
+                                                        }
                                                     ?>
-                                                        <img src="<?= htmlspecialchars($imageUrl) ?>" 
+                                                        <img src="<?= htmlspecialchars($finalImageUrl) ?>" 
                                                              alt="<?= htmlspecialchars($item['nom'] ?? '') ?>"
                                                              class="rounded me-3"
-                                                             style="width: 50px; height: 50px; object-fit: <?= isset($item['logo']) ? 'contain' : 'cover' ?>; <?= isset($item['logo']) ? 'padding: 5px; background: white; border: 1px solid #dee2e6;' : '' ?>">
+                                                             style="width: 50px; height: 50px; object-fit: <?= isset($item['logo']) ? 'contain' : 'cover' ?>; <?= isset($item['logo']) ? 'padding: 5px; background: white; border: 1px solid #dee2e6;' : '' ?>"
+                                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                        <div class="rounded me-3 bg-light d-none align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                                            <i class="fas fa-user text-muted"></i>
+                                                        </div>
                                                     <?php endif; ?>
                                                     <div>
                                                         <strong>
@@ -268,11 +279,25 @@
                              data-category="<?= $item['category_id'] ?? '' ?>"
                              data-name="<?= htmlspecialchars($item['nom'] ?? $item['titre'] ?? $item['name'] ?? '') ?>">
                             <div class="card h-100 shadow-sm hover-card">
-                                <?php if (!empty($item['photo'])): ?>
-                                    <img src="<?= htmlspecialchars($item['photo']) ?>" 
+                                <?php 
+                                $photoUrl = $item['photo'] ?? null;
+                                if (!empty($photoUrl)): 
+                                    // Gérer les URLs externes et les chemins locaux
+                                    if (strpos($photoUrl, 'http://') === 0 || strpos($photoUrl, 'https://') === 0) {
+                                        $finalPhotoUrl = $photoUrl;
+                                    } else {
+                                        // Chemin local - ajouter /public si nécessaire
+                                        $finalPhotoUrl = (strpos($photoUrl, '/public/') === 0) ? $photoUrl : '/public' . $photoUrl;
+                                    }
+                                ?>
+                                    <img src="<?= htmlspecialchars($finalPhotoUrl) ?>" 
                                          class="card-img-top" 
                                          alt="<?= htmlspecialchars($item['nom'] ?? '') ?>"
-                                         style="height: 200px; object-fit: cover;">
+                                         style="height: 200px; object-fit: cover;"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                    <div class="card-img-top bg-light align-items-center justify-content-center" style="height: 200px; display: none;">
+                                        <i class="fas fa-user fa-4x text-muted"></i>
+                                    </div>
                                 <?php else: ?>
                                     <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
                                         <i class="fas fa-user fa-4x text-muted"></i>
