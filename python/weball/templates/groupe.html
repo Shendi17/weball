@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ groupe.nom }} · Weball{% endblock %}
+{% block description %}{{ groupe.description }}{% endblock %}
+{% block contenu %}
+<nav class="ariane"><a href="/">Weball</a> › {{ groupe.nom }}</nav>
+<h1 style="--c: {{ groupe.couleur }}">{{ groupe.nom }}</h1>
+<p class="chapo">{{ groupe.description }}</p>
+<div class="types">
+{% for t in groupe.types %}
+  <a class="type" href="/{{ groupe.slug }}/{{ t.slug }}" style="--c: {{ groupe.couleur }}">
+    <strong>{{ t.nom_pluriel }}</strong><span>{{ t.description }}</span><small>{{ comptes.get(t.slug, 0) }} fiche(s)</small>
+  </a>
+{% endfor %}
+</div>
+{% endblock %}

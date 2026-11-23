@@ -1,0 +1,5 @@
+<a class="carte" href="{{ url_fiche(el) }}">
+  {% if el.image %}<img src="{{ el.image }}" alt="" loading="lazy">{% else %}<span class="sans-image">{{ el.titre[:1] }}</span>{% endif %}
+  <span class="carte-titre">{{ el.titre }}</span>
+  {% if el.sous_titre %}<span class="carte-sous-titre">{{ el.sous_titre }}</span>{% endif %}
+</a>

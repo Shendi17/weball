@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Weball, l'annuaire de tout le Web{% endblock %}</title>
+<meta name="description" content="{% block description %}Weball répertorie tout ce qui existe sur le Web : personnalités, autorités, plateformes, médias, boutiques, projets, classés en 5 groupes de 5 types.{% endblock %}">
+<link rel="stylesheet" href="/static/weball.css">
+</head>
+<body>
+<header class="entete">
+  <a class="logo" href="/">Weball</a>
+  <form class="recherche" action="/recherche" method="get" role="search">
+    <input type="search" name="q" value="{{ q|default('') }}" placeholder="Rechercher dans l'annuaire" aria-label="Rechercher">
+  </form>
+</header>
+<div class="cadre">
+  <nav class="menu" aria-label="Groupes">
+    {% for g in GROUPES %}
+    <section style="--c: {{ g.couleur }}">
+      <a class="menu-groupe" href="/{{ g.slug }}">{{ g.nom }}</a>
+      <ul>{% for t in g.types %}<li><a href="/{{ g.slug }}/{{ t.slug }}">{{ t.nom }}</a></li>{% endfor %}</ul>
+    </section>
+    {% endfor %}
+  </nav>
+  <main>{% block contenu %}{% endblock %}</main>
+</div>
+<footer class="pied">Weball, unité de connaissance de l'écosystème WebAllOne. La qualité est essentielle.</footer>
+</body>
+</html>

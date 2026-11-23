@@ -1,0 +1,50 @@
+/* Mise en page provisoire de l'étape 1 : l'identité visuelle propre à Weball arrive à l'étape 3. */
+:root { --fond: #fafaf8; --texte: #1d1d1f; --doux: #6b6b70; --ligne: #e4e4e0; --c: #3b5bdb; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.55 system-ui, sans-serif; background: var(--fond); color: var(--texte); }
+a { color: inherit; }
+.entete { display: flex; gap: 1rem; align-items: center; padding: .75rem 1.25rem; border-bottom: 1px solid var(--ligne); background: #fff; }
+.logo { font-weight: 800; font-size: 1.3rem; text-decoration: none; }
+.recherche { flex: 1; max-width: 32rem; }
+.recherche input { width: 100%; padding: .5rem .75rem; border: 1px solid var(--ligne); border-radius: 8px; font: inherit; }
+.cadre { display: grid; grid-template-columns: 14rem 1fr; gap: 2rem; max-width: 80rem; margin: 0 auto; padding: 1.5rem 1.25rem; }
+.menu section { margin-bottom: 1rem; }
+.menu-groupe { font-weight: 700; text-decoration: none; border-left: 4px solid var(--c); padding-left: .5rem; }
+.menu ul, .groupe ul, .filtres ul { list-style: none; margin: .25rem 0; padding-left: .75rem; }
+.menu li a { text-decoration: none; color: var(--doux); font-size: .92rem; }
+.menu li a:hover { color: var(--texte); }
+h1 { margin: .25rem 0; border-left: 6px solid var(--c); padding-left: .75rem; }
+.chapo { color: var(--doux); }
+.ariane { font-size: .85rem; color: var(--doux); }
+.groupes, .types { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1rem; }
+.groupe, .type { background: #fff; border: 1px solid var(--ligne); border-top: 4px solid var(--c); border-radius: 10px; padding: 1rem; }
+.type { display: flex; flex-direction: column; gap: .25rem; text-decoration: none; }
+.type span, .type small, .groupe small { color: var(--doux); }
+.groupe h2 { margin: 0; }
+.cartes { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 1rem; }
+.carte { display: flex; flex-direction: column; background: #fff; border: 1px solid var(--ligne); border-radius: 10px; overflow: hidden; text-decoration: none; }
+.carte img, .sans-image { width: 100%; aspect-ratio: 1; object-fit: cover; background: #eee; }
+.sans-image { display: grid; place-items: center; font-size: 2.5rem; color: var(--doux); }
+.carte-titre { font-weight: 600; padding: .5rem .75rem 0; }
+.carte-sous-titre { font-size: .85rem; color: var(--doux); padding: 0 .75rem .75rem; }
+.liste { display: grid; grid-template-columns: 15rem 1fr; gap: 1.5rem; }
+.filtres { font-size: .92rem; }
+.filtres a { text-decoration: none; }
+[aria-current="page"] { font-weight: 700; color: var(--c); }
+.pages { display: flex; gap: .5rem; margin-top: 1rem; }
+.fiche header { display: flex; gap: 1.5rem; align-items: flex-start; }
+.fiche header img { width: 12rem; aspect-ratio: 1; object-fit: cover; border-radius: 10px; }
+.fiche-type { text-transform: uppercase; letter-spacing: .08em; font-size: .8rem; color: var(--c); margin: 0; }
+.termes a { display: inline-block; margin: 0 .35rem .35rem 0; padding: .1rem .6rem; border-radius: 99px; background: #fff; border: 1px solid var(--ligne); font-size: .85rem; text-decoration: none; }
+.texte { margin: 1.5rem 0; max-width: 48rem; }
+.donnees { display: grid; grid-template-columns: 12rem 1fr; gap: .5rem 1rem; border-top: 1px solid var(--ligne); padding-top: 1rem; }
+.donnees dt { font-weight: 600; color: var(--doux); }
+.donnees dd { margin: 0; overflow-wrap: anywhere; }
+.donnees ul { margin: 0; padding-left: 1.1rem; }
+.pied { text-align: center; color: var(--doux); font-size: .85rem; padding: 2rem 1rem; }
+@media (max-width: 760px) {
+  .cadre, .liste { grid-template-columns: 1fr; }
+  .menu { display: none; }
+  .fiche header { flex-direction: column; }
+  .donnees { grid-template-columns: 1fr; }
+}

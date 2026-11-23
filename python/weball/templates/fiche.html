@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% macro valeur(v) -%}
+  {%- if v is mapping -%}
+    <dl class="sous">{% for k, x in v.items() %}<dt>{{ k|replace('_', ' ')|capitalize }}</dt><dd>{{ valeur(x) }}</dd>{% endfor %}</dl>
+  {%- elif v is iterable and v is not string -%}
+    <ul>{% for x in v %}<li>{{ valeur(x) }}</li>{% endfor %}</ul>
+  {%- elif v is string and v.startswith('http') -%}
+    <a href="{{ v }}" rel="nofollow noopener" target="_blank">{{ v }}</a>
+  {%- else -%}{{ v }}{%- endif -%}
+{%- endmacro %}
+{% block title %}{{ el.titre }} · {{ type.nom }} · Weball{% endblock %}
+{% block description %}{{ (el.description or type.description)|striptags|truncate(155) }}{% endblock %}
+{% block contenu %}
+<nav class="ariane"><a href="/">Weball</a> › <a href="/{{ groupe.slug }}">{{ groupe.nom }}</a> › <a href="/{{ groupe.slug }}/{{ type.slug }}">{{ type.nom_pluriel }}</a> › {{ el.titre }}</nav>
+<article class="fiche" style="--c: {{ groupe.couleur }}">
+  <header>
+    {% if el.image %}<img src="{{ el.image }}" alt="{{ el.titre }}">{% endif %}
+    <div>
+      <p class="fiche-type">{{ type.nom }}</p>
+      <h1>{{ el.titre }}</h1>
+      {% if el.sous_titre %}<p class="chapo">{{ el.sous_titre }}</p>{% endif %}
+      {% if el.termes %}<p class="termes">{% for t in el.termes %}<a href="/{{ groupe.slug }}/{{ type.slug }}?{{ 'genre' if t.kind == 'genre' else 'categorie' }}={{ t.slug }}">{{ t.nom }}</a>{% endfor %}</p>{% endif %}
+    </div>
+  </header>
+  {% if el.description %}<div class="texte">{{ el.description|e|replace('\n', '<br>'|safe) }}</div>{% endif %}
+  {% if el.donnees %}
+  <dl class="donnees">{% for k, v in el.donnees.items() %}<dt>{{ k|replace('_', ' ')|capitalize }}</dt><dd>{{ valeur(v) }}</dd>{% endfor %}</dl>
+  {% endif %}
+</article>
+{% endblock %}
