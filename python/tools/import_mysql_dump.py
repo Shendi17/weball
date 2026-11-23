@@ -16,10 +16,14 @@ from slugify import slugify
 from sqlalchemy import delete
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from weball.catalogue import OUTILS, TYPES_PAR_SLUG  # noqa: E402
 from weball.db import DATABASE_URL, Base, Element, Terme, element_terme, make_session_factory  # noqa: E402
 
 TABLES_IGNOREES = {"users", "user_services"}
+# Seuls Personnalité et Autorité ont du vrai contenu ; les autres tables de modules ne
+# contiennent que les 3-4 lignes d'exemple du prototype PHP (TechCorp, Bio Market...).
+TYPES_REELS = {"personnalite", "autorite"}
+# Personnalités fictives du prototype (avatar générique), retirées à la demande d'Anthony le 23/11/2026.
+FICHES_DEMO = {("personnalite", 1), ("personnalite", 2), ("personnalite", 3), ("personnalite", 4)}
 # Coordonnées de personnes : jamais publiées sur l'annuaire.
 CHAMPS_PRIVES = {"user_id", "email", "telephone", "contact_email", "contact_telephone"}
 TYPES_PERSONNES = {"personnalite", "adhesion"}
@@ -153,9 +157,8 @@ def importer(lignes: dict[str, list[dict]], session) -> dict[str, int]:
     session.execute(delete(Terme).where(Terme.parent_id.is_not(None)))
     session.execute(delete(Terme))
     compte = {}
-    types_connus = set(TYPES_PAR_SLUG) | {t.slug for t in OUTILS}
-    for type_slug in sorted(types_connus):
-        rows = lignes.get(type_slug, [])
+    for type_slug in sorted(TYPES_REELS):
+        rows = [r for r in lignes.get(type_slug, []) if (type_slug, int(r["id"])) not in FICHES_DEMO]
         if not rows:
             continue
         genres, categories = {}, {}

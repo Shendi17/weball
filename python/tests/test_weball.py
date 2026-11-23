@@ -41,13 +41,19 @@ CREATE TABLE `personnalite` (
   `categories_ids` text
 ) ENGINE=InnoDB;
 INSERT INTO `personnalite` VALUES
-('3','Kahlo','Frida','Peintre mexicaine, l\'une des plus célèbres.\nNée à Coyoacán.','frida@example.com','[\"Pies, para qué los quiero\"]','1954-07-13','1','[7]'),
-('4','Kahlo','Frida',NULL,NULL,NULL,'0000-00-00',NULL,NULL);
+('1','Dupont','Jean',NULL,NULL,NULL,NULL,NULL,NULL),
+('30','Kahlo','Frida','Peintre mexicaine, l\'une des plus célèbres.\nNée à Coyoacán.','frida@example.com','[\"Pies, para qué los quiero\"]','1954-07-13','1','[7]'),
+('31','Kahlo','Frida',NULL,NULL,NULL,'0000-00-00',NULL,NULL);
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `password` varchar(255)
 ) ENGINE=InnoDB;
 INSERT INTO `users` VALUES (1,'secret');
+CREATE TABLE `entite` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL
+) ENGINE=InnoDB;
+INSERT INTO `entite` VALUES (1,'TechCorp Solutions');
 """
 
 
@@ -65,13 +71,13 @@ def _client():
 def test_import_et_pages():
     client, Session = _client()
     with Session() as s:
-        frida = s.query(Element).filter_by(source_id=3).one()
+        frida = s.query(Element).filter_by(source_id=30).one()
         assert frida.slug == "frida-kahlo" and frida.titre == "Frida Kahlo"
         assert frida.description.startswith("Peintre mexicaine, l'une") and "\n" in frida.description
         assert "email" not in frida.donnees  # coordonnées privées jamais publiées
         assert frida.donnees["citations"] == ["Pies, para qué los quiero"]
         assert sorted(t.nom for t in frida.termes) == ["Artiste", "Peintre"]
-        doublon = s.query(Element).filter_by(source_id=4).one()
+        doublon = s.query(Element).filter_by(source_id=31).one()
         assert doublon.slug == "frida-kahlo-2" and "date_deces" not in doublon.donnees
 
     assert client.get("/").status_code == 200
@@ -80,6 +86,6 @@ def test_import_et_pages():
     fiche = client.get("/classeur/personnalite/frida-kahlo").text
     assert "Pies, para qué los quiero" in fiche and "frida@example.com" not in fiche
     assert client.get("/registre/personnalite/frida-kahlo").status_code == 404  # mauvais groupe
-    r = client.get("/personnalite_detail?id=3", follow_redirects=False)
+    r = client.get("/personnalite_detail?id=30", follow_redirects=False)
     assert r.status_code == 301 and r.headers["location"] == "/classeur/personnalite/frida-kahlo"
     assert "Frida" in client.get("/recherche?q=kahlo").text
