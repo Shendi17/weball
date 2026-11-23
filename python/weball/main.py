@@ -8,10 +8,22 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session, selectinload
 
-from .catalogue import GROUPES, GROUPES_PAR_SLUG, OUTILS, TYPES_PAR_SLUG, groupe_et_type
+from . import ines
+from .catalogue import OUTILS
 from .db import Element, Terme, make_session_factory
 
 ICI = Path(__file__).parent
+# Noms, descriptions et couleurs lus dans l'arborescence INES au démarrage (catalogue local sinon).
+GROUPES = ines.charger_groupes()
+GROUPES_PAR_SLUG = {g.slug: g for g in GROUPES}
+TYPES_PAR_SLUG = {t.slug: (g, t) for g in GROUPES for t in g.types}
+
+
+def groupe_et_type(groupe_slug: str, type_slug: str):
+    found = TYPES_PAR_SLUG.get(type_slug)
+    return found if found and found[0].slug == groupe_slug else None
+
+
 PAR_PAGE = 24
 
 app = FastAPI(title="Weball", docs_url=None, redoc_url=None)

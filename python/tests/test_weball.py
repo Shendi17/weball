@@ -89,3 +89,17 @@ def test_import_et_pages():
     r = client.get("/personnalite_detail?id=30", follow_redirects=False)
     assert r.status_code == 301 and r.headers["location"] == "/classeur/personnalite/frida-kahlo"
     assert "Frida" in client.get("/recherche?q=kahlo").text
+
+
+def test_synchro_ines():
+    from weball.ines import charger_groupes, fusionner, noeuds_weball
+    arbre = [{"id": "ines", "children": [{"id": "weball", "children": [{"id": "univers", "children": [
+        {"id": "weball-classeur", "name": "Classeur INES", "color": "#123456", "children": [
+            {"id": "weball-personnalite", "name": "Personnalité", "description": "Depuis INES"}]},
+        {"id": "weball-inconnu", "name": "Ignoré"}]}]}]}]
+    groupes = fusionner(noeuds_weball(arbre))
+    classeur = groupes[0]
+    assert (classeur.slug, classeur.nom, classeur.couleur) == ("classeur", "Classeur INES", "#123456")
+    assert classeur.types[0].description == "Depuis INES"
+    assert classeur.types[1].nom == "Autorité" and len(groupes) == 5  # le reste vient du catalogue
+    assert charger_groupes("http://127.0.0.1:9", timeout=0.2)[0].nom == "Classeur"  # INES injoignable

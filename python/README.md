@@ -28,6 +28,10 @@ python -m tools.import_mysql_dump ../database/weball_contenu.sql   # export sans
 uvicorn weball.main:app --reload
 ```
 
+Synchro INES : avec `WEBALL_INES_API_URL=http://ines-backend:8080`, Weball lit au démarrage les nœuds
+`weball-<slug>` de l'arborescence INES (noms, descriptions, couleurs des groupes et types).
+Sans INES joignable, il garde `weball/catalogue.py`.
+
 Autre base : `WEBALL_DATABASE_URL=postgresql+psycopg://user@hote/weball` (ou `sqlite:///weball.db`).
 
 Tests : `pytest -q`
