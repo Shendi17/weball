@@ -99,7 +99,7 @@ def test_synchro_ines():
         {"id": "weball-inconnu", "name": "Ignoré"}]}]}]}]
     groupes = fusionner(noeuds_weball(arbre))
     classeur = groupes[0]
-    assert (classeur.slug, classeur.nom, classeur.couleur) == ("classeur", "Classeur INES", "#123456")
+    assert (classeur.slug, classeur.nom, classeur.couleur) == ("classeur", "Classeur INES", "#3b5bdb")
     assert classeur.types[0].description == "Depuis INES"
     assert classeur.types[1].nom == "Autorité" and len(groupes) == 5  # le reste vient du catalogue
     assert charger_groupes("http://127.0.0.1:9", timeout=0.2)[0].nom == "Classeur"  # INES injoignable

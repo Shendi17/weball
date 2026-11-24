@@ -1,6 +1,6 @@
 """Synchro avec l'arborescence INES.
 
-INES est la source des noms, descriptions et couleurs des 5 groupes et 25 types : ses nœuds
+INES est la source des noms et descriptions des 5 groupes et 25 types : ses nœuds
 `weball-<slug>` (pôles pour les groupes, référentiels pour les types) remplacent les valeurs du
 catalogue local. Si INES ne répond pas, Weball garde son catalogue : le site ne tombe jamais
 à cause d'INES.
@@ -32,15 +32,15 @@ def noeuds_weball(arbre) -> dict[str, dict]:
 
 
 def fusionner(noeuds: dict[str, dict], groupes: tuple[Groupe, ...] = GROUPES) -> tuple[Groupe, ...]:
-    """Applique les noms, descriptions et couleurs d'INES au catalogue. Les slugs et l'ordre
+    """Applique les noms et descriptions d'INES au catalogue. Les couleurs restent celles de
+    Weball (INES impose une couleur par type de nœud, pas par groupe). Les slugs et l'ordre
     5 x 5 restent ceux de Weball (ils font les URL) : un nœud INES inconnu est ignoré."""
     def maj(objet, **extra):
         n = noeuds.get(objet.slug, {})
         return replace(objet, nom=n.get("name") or objet.nom,
                        description=n.get("description") or objet.description, **extra)
 
-    return tuple(maj(g, couleur=noeuds.get(g.slug, {}).get("color") or g.couleur,
-                     types=tuple(maj(t) for t in g.types)) for g in groupes)
+    return tuple(maj(g, types=tuple(maj(t) for t in g.types)) for g in groupes)
 
 
 def charger_groupes(url: str = INES_API_URL, timeout: float = 3) -> tuple[Groupe, ...]:
