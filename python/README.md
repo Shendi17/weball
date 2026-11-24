@@ -35,3 +35,13 @@ Sans INES joignable, il garde `weball/catalogue.py`.
 Autre base : `WEBALL_DATABASE_URL=postgresql+psycopg://user@hote/weball` (ou `sqlite:///weball.db`).
 
 Tests : `pytest -q`
+
+## Mise en ligne sur le VPS INES (comme Digita)
+
+1. Sur le VPS : `git clone` du dépôt dans `/opt/weball`, puis `cp python/deploy/.env.example python/deploy/.env`
+   et choisir le mot de passe de la base.
+2. Base et données : `bash python/deploy/import.sh /chemin/weball_contenu.sql` (crée la base `weball`
+   dans `ines-postgres` si besoin, puis importe l'export sans comptes).
+3. Conteneur : `docker compose -f python/deploy/docker-compose.yml --env-file python/deploy/.env up -d --build`.
+4. DNS, certificat et vhost : suivre l'en-tête de `python/deploy/nginx-weball.conf`.
+5. Vérifier `https://weball.weballone.com/` puis `/sitemap.xml`, et déclarer le sitemap dans Google Search Console.
