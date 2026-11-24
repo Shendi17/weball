@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block jsonld %}<script type="application/ld+json">{{ {"@context": "https://schema.org", "@type": "WebSite", "name": "Weball", "url": SITE_URL ~ "/", "potentialAction": {"@type": "SearchAction", "target": SITE_URL ~ "/recherche?q={q}", "query-input": "required name=q"}}|tojson_ld|safe }}</script>{% endblock %}
+{% block contenu %}
+<section class="hero">
+  <img class="hero-symbole" src="/static/decagramme.svg" alt="" width="120" height="120">
+  <p class="surtitre">L'annuaire de l'écosystème WebAllOne</p>
+  <h1>Tout le Web, <em>répertorié</em>.</h1>
+  <p class="chapo">Personnes, institutions, outils, savoirs, offres et projets : tout ce qui existe, classé dans une seule matrice de 5 groupes et 25 types.</p>
+  <form class="hero-recherche" action="/recherche" method="get" role="search">
+    <input type="search" name="q" placeholder="Rechercher Marie Curie, l'UNESCO, Paris…" aria-label="Rechercher dans Weball">
+    <button type="submit">Chercher</button>
+  </form>
+</section>
+
+<section class="matrice" aria-label="La matrice Weball">
+  {% for g in GROUPES %}
+  <div class="matrice-col" style="--c: {{ g.couleur }}">
+    <a class="matrice-tete" href="/{{ g.slug }}">
+      <span class="matrice-num">{{ loop.index }}</span>
+      <strong>{{ g.nom }}</strong>
+      <small>{{ g.description.split(' : ')[0] }}</small>
+    </a>
+    {% for t in g.types %}
+    {% set n = comptes.get(t.slug, 0) %}
+    <a class="matrice-case {{ 'vide' if not n }}" href="/{{ g.slug }}/{{ t.slug }}">
+      <span>{{ t.nom_pluriel }}</span><b>{{ n }}</b>
+    </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</section>
+
+{% if recents %}
+<section class="bloc">
+  <h2 class="titre-bloc">Dernières fiches</h2>
+  <div class="cartes">{% for el in recents %}{% include "_carte.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+{% endblock %}

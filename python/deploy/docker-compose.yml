@@ -1,0 +1,30 @@
+# Weball (Python) sur le VPS INES — projet compose séparé, branché sur le réseau d'INES (comme Digita).
+# Sur le VPS :  cd /opt/weball && git pull && docker compose -p weball -f python/deploy/docker-compose.yml --env-file python/deploy/.env up -d --build
+#
+# - Base : base « weball » dans le conteneur ines-postgres existant (pas de nouveau serveur SQL).
+# - Exposition : uniquement via ines-nginx (server_name weball.weballone.com), aucun port publié.
+name: weball
+
+services:
+  weball-web:
+    build:
+      context: ../..
+      dockerfile: python/Dockerfile
+    image: weball-web:${WEBALL_IMAGE_TAG:-latest}
+    container_name: weball-web
+    env_file: .env
+    networks:
+      - ines
+    restart: unless-stopped
+    mem_limit: 256m
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  ines:
+    external: true
+    # Nom du réseau créé par le compose d'INES — vérifier avec `docker network ls`.
+    name: ${INES_NETWORK:-ines_ines-network}

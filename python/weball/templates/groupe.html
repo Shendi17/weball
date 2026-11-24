@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ groupe.nom }} : {{ groupe.types|map(attribute='nom_pluriel')|join(', ') }} · Weball{% endblock %}
+{% block description %}{{ groupe.description }}{% endblock %}
+{% block contenu %}
+<div class="page" style="--c: {{ groupe.couleur }}">
+  <nav class="ariane" aria-label="Fil d'Ariane"><a href="/">Weball</a><span>{{ groupe.nom }}</span></nav>
+  <header class="tete-page">
+    <p class="surtitre">Groupe</p>
+    <h1>{{ groupe.nom }}</h1>
+    <p class="chapo">{{ groupe.description }}</p>
+  </header>
+  <div class="types">
+  {% for t in groupe.types %}
+    {% set n = comptes.get(t.slug, 0) %}
+    <a class="type {{ 'vide' if not n }}" href="/{{ groupe.slug }}/{{ t.slug }}">
+      <span class="type-nom">{{ t.nom_pluriel }}</span>
+      <span class="type-desc">{{ t.description }}</span>
+      <span class="type-compte">{{ n }} fiche{{ 's' if n > 1 }}</span>
+    </a>
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}

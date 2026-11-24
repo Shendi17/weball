@@ -37,3 +37,9 @@ config.db.php
 storage/
 archivage_modules.ps1
 Amélios
+
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+!python/deploy/.env.example
