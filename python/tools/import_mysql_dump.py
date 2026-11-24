@@ -122,6 +122,15 @@ def _ids(row, cle_liste, cle_simple):
     return {int(x) for x in ids if str(x).isdigit()}
 
 
+def reparer_image(url):
+    """Les URL de vignettes Wikimedia ont été tronquées à 255 caractères dans l'ancienne base :
+    on reconstruit le nom de la vignette depuis le nom du fichier d'origine."""
+    m = re.match(r"(https://upload\.wikimedia\.org/.+/thumb/\w/\w\w/([^/]+))/(\d+px)-", url or "")
+    if m and not url.endswith(m.group(2)):
+        return f"{m.group(1)}/{m.group(3)}-{m.group(2)}"
+    return url
+
+
 def element_depuis_ligne(type_slug: str, row: dict, slugs_pris: set) -> Element:
     if row.get("prenom") or type_slug == "personnalite":
         prenom, nom = (row.get("prenom") or "").strip(), (row.get("nom") or "").strip()
@@ -147,7 +156,7 @@ def element_depuis_ligne(type_slug: str, row: dict, slugs_pris: set) -> Element:
         slug, n = f"{base}-{n}", n + 1
     slugs_pris.add(slug)
     return Element(type_slug=type_slug, slug=slug, titre=titre[:300], sous_titre=sous_titre,
-                   description=description, image=_premier(row, CHAMPS_IMAGE), donnees=donnees,
+                   description=description, image=reparer_image(_premier(row, CHAMPS_IMAGE)), donnees=donnees,
                    source_table=type_slug, source_id=int(row["id"]))
 
 

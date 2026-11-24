@@ -103,3 +103,22 @@ def test_synchro_ines():
     assert classeur.types[0].description == "Depuis INES"
     assert classeur.types[1].nom == "Autorité" and len(groupes) == 5  # le reste vient du catalogue
     assert charger_groupes("http://127.0.0.1:9", timeout=0.2)[0].nom == "Classeur"  # INES injoignable
+
+
+def test_reparer_image_tronquee():
+    from tools.import_mysql_dump import reparer_image
+    base = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Napoleon.jpg"
+    assert reparer_image(f"{base}/220px-Napol") == f"{base}/220px-Napoleon.jpg"
+    assert reparer_image(f"{base}/220px-Napoleon.jpg") == f"{base}/220px-Napoleon.jpg"
+    assert reparer_image("/photos/x.jpg") == "/photos/x.jpg"
+
+
+def test_seo():
+    client, _ = _client()
+    fiche = client.get("/classeur/personnalite/frida-kahlo?utm_source=x").text
+    assert '<link rel="canonical" href="https://weball.weballone.com/classeur/personnalite/frida-kahlo">' in fiche
+    assert '"@type": "Person"' in fiche and '"deathDate": "1954-07-13"' in fiche and "BreadcrumbList" in fiche
+    assert "13 juillet 1954" in fiche  # date affichée en français
+    plan = client.get("/sitemap.xml").text
+    assert "/classeur/personnalite/frida-kahlo</loc>" in plan and "/guide/campagne</loc>" in plan
+    assert "Sitemap: https://weball.weballone.com/sitemap.xml" in client.get("/robots.txt").text

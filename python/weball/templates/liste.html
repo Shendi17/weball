@@ -1,29 +1,37 @@
 {% extends "base.html" %}
-{% block title %}{{ actif.nom ~ ' · ' if actif }}{{ type.nom_pluriel }} · Weball{% endblock %}
-{% block description %}{{ type.description }}{% endblock %}
+{% block title %}{{ actif.nom ~ ' · ' if actif }}{{ type.nom_pluriel }}{{ ' (page ' ~ page ~ ')' if page > 1 }} · Weball{% endblock %}
+{% block description %}{{ (actif.description if actif and actif.description) or type.description }} {{ total }} fiche{{ 's' if total > 1 }} dans l'annuaire Weball.{% endblock %}
 {% block contenu %}
-<nav class="ariane"><a href="/">Weball</a> › <a href="/{{ groupe.slug }}">{{ groupe.nom }}</a> › {{ type.nom_pluriel }}</nav>
-<h1 style="--c: {{ groupe.couleur }}">{{ type.nom_pluriel }}{% if actif %} : {{ actif.nom }}{% endif %}</h1>
-<p class="chapo">{{ type.description }} <small>{{ total }} fiche(s)</small></p>
-<div class="liste">
-  {% if genres %}
-  <aside class="filtres" aria-label="Filtres">
-    <a href="/{{ groupe.slug }}/{{ type.slug }}" {% if not actif %}aria-current="page"{% endif %}>Tout</a>
-    {% for g in genres %}
-    <details {% if actif and (actif.id == g.id or actif.parent_id == g.id) %}open{% endif %}>
-      <summary><a href="?genre={{ g.slug }}" {% if actif and actif.id == g.id %}aria-current="page"{% endif %}>{{ g.nom }}</a></summary>
-      <ul>{% for c in g.enfants %}<li><a href="?categorie={{ c.slug }}" {% if actif and actif.id == c.id %}aria-current="page"{% endif %}>{{ c.nom }}</a></li>{% endfor %}</ul>
-    </details>
-    {% endfor %}
-  </aside>
-  {% endif %}
-  <div>
-    {% if elements %}
-    <div class="cartes">{% for el in elements %}{% include "_carte.html" %}{% endfor %}</div>
-    {% else %}<p>Aucune fiche pour le moment.</p>{% endif %}
-    {% if pages > 1 %}
-    <nav class="pages">{% for p in range(1, pages + 1) %}<a href="?{{ 'genre=' ~ request.query_params.genre ~ '&' if request.query_params.genre }}{{ 'categorie=' ~ request.query_params.categorie ~ '&' if request.query_params.categorie }}page={{ p }}" {% if p == page %}aria-current="page"{% endif %}>{{ p }}</a>{% endfor %}</nav>
+<div class="page" style="--c: {{ groupe.couleur }}">
+  <nav class="ariane" aria-label="Fil d'Ariane"><a href="/">Weball</a><a href="/{{ groupe.slug }}">{{ groupe.nom }}</a>{% if actif %}<a href="/{{ groupe.slug }}/{{ type.slug }}">{{ type.nom_pluriel }}</a><span>{{ actif.nom }}</span>{% else %}<span>{{ type.nom_pluriel }}</span>{% endif %}</nav>
+  <header class="tete-page">
+    <p class="surtitre">{{ groupe.nom }}</p>
+    <h1>{{ actif.nom if actif else type.nom_pluriel }}</h1>
+    <p class="chapo">{{ type.description }} <span class="compteur">{{ total }} fiche{{ 's' if total > 1 }}</span></p>
+  </header>
+  <div class="liste {{ 'sans-filtres' if not genres }}">
+    {% if genres %}
+    <aside class="filtres" aria-label="Affiner">
+      <p class="filtres-titre">Affiner</p>
+      <a class="filtre-tout" href="/{{ groupe.slug }}/{{ type.slug }}" {% if not actif %}aria-current="page"{% endif %}>Tout voir</a>
+      {% for g in genres %}
+      <details {% if actif and (actif.id == g.id or actif.parent_id == g.id) %}open{% endif %}>
+        <summary><a href="?genre={{ g.slug }}" {% if actif and actif.id == g.id %}aria-current="page"{% endif %}>{{ g.nom }}</a></summary>
+        {% if g.enfants %}<ul>{% for c in g.enfants %}<li><a href="?categorie={{ c.slug }}" {% if actif and actif.id == c.id %}aria-current="page"{% endif %}>{{ c.nom }}</a></li>{% endfor %}</ul>{% endif %}
+      </details>
+      {% endfor %}
+    </aside>
     {% endif %}
+    <div>
+      {% if elements %}
+      <div class="cartes">{% for el in elements %}{% include "_carte.html" %}{% endfor %}</div>
+      {% else %}
+      <div class="vide-message"><p><strong>Aucune fiche pour l'instant.</strong></p><p>Ce type attend ses premières fiches. Elles arriveront avec l'enrichissement de l'annuaire.</p></div>
+      {% endif %}
+      {% if pages > 1 %}
+      <nav class="pages" aria-label="Pages">{% for p in range(1, pages + 1) %}<a href="?{{ 'genre=' ~ request.query_params.genre ~ '&' if request.query_params.genre }}{{ 'categorie=' ~ request.query_params.categorie ~ '&' if request.query_params.categorie }}page={{ p }}" {% if p == page %}aria-current="page"{% endif %}>{{ p }}</a>{% endfor %}</nav>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}

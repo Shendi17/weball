@@ -1,30 +1,58 @@
 {% extends "base.html" %}
 {% macro valeur(v) -%}
-  {%- if v is mapping -%}
-    <dl class="sous">{% for k, x in v.items() %}<dt>{{ k|replace('_', ' ')|capitalize }}</dt><dd>{{ valeur(x) }}</dd>{% endfor %}</dl>
+  {%- if v is mapping and (v.get('annee') or v.get('date')) and (v.get('evenement') or v.get('description')) -%}
+    <span class="quand">{{ (v.get('annee') or v.get('date'))|date_fr }}</span> {{ v.get('evenement') or v.get('description') }}
+  {%- elif v is mapping -%}
+    {%- set titre = v.get('titre') or v.get('nom') or v.get('title') or v.get('name') -%}
+    {%- set lien = v.get('url') or v.get('lien') or v.get('link') -%}
+    {%- if titre -%}
+      {%- if lien %}<a href="{{ lien }}" rel="nofollow noopener" target="_blank">{{ titre }}</a>{% else %}<strong>{{ titre }}</strong>{% endif -%}
+      {%- for k, x in v.items() if k not in ('titre', 'nom', 'title', 'name', 'url', 'lien', 'link') and x %}<span class="detail">{{ valeur(x) }}</span>{% endfor -%}
+    {%- else -%}
+      <dl class="sous">{% for k, x in v.items() if x %}<dt>{{ libelle(k) }}</dt><dd>{{ valeur(x) }}</dd>{% endfor %}</dl>
+    {%- endif -%}
+  {%- elif v is iterable and v is not string and v and v is images -%}
+    <div class="galerie">{% for x in v %}<img src="{{ x }}" alt="" loading="lazy" onerror="this.remove()">{% endfor %}</div>
   {%- elif v is iterable and v is not string -%}
     <ul>{% for x in v %}<li>{{ valeur(x) }}</li>{% endfor %}</ul>
   {%- elif v is string and v.startswith('http') -%}
-    <a href="{{ v }}" rel="nofollow noopener" target="_blank">{{ v }}</a>
-  {%- else -%}{{ v }}{%- endif -%}
+    <a href="{{ v }}" rel="nofollow noopener" target="_blank">{{ v.split('//')[1].split('/')[0].removeprefix('www.') }}</a>
+  {%- else -%}{{ v|date_fr }}{%- endif -%}
 {%- endmacro %}
-{% block title %}{{ el.titre }} · {{ type.nom }} · Weball{% endblock %}
-{% block description %}{{ (el.description or type.description)|striptags|truncate(155) }}{% endblock %}
+{% block title %}{{ el.titre }}{{ ' (' ~ el.sous_titre ~ ')' if el.sous_titre }} · {{ type.nom }} · Weball{% endblock %}
+{% block description %}{{ (el.description or type.description)|striptags|truncate(155, killwords=False, end='…') }}{% endblock %}
+{% block og_type %}{{ 'profile' if type.slug == 'personnalite' else 'article' }}{% endblock %}
+{% block og_image %}{% if el.image %}<meta property="og:image" content="{{ el.image if el.image.startswith('http') else SITE_URL ~ el.image }}">{% endif %}{% endblock %}
+{% block jsonld %}{% for bloc in jsonld %}<script type="application/ld+json">{{ bloc|tojson_ld|safe }}</script>{% endfor %}{% endblock %}
 {% block contenu %}
-<nav class="ariane"><a href="/">Weball</a> › <a href="/{{ groupe.slug }}">{{ groupe.nom }}</a> › <a href="/{{ groupe.slug }}/{{ type.slug }}">{{ type.nom_pluriel }}</a> › {{ el.titre }}</nav>
-<article class="fiche" style="--c: {{ groupe.couleur }}">
-  <header>
-    {% if el.image %}<img src="{{ el.image }}" alt="{{ el.titre }}">{% endif %}
-    <div>
-      <p class="fiche-type">{{ type.nom }}</p>
-      <h1>{{ el.titre }}</h1>
-      {% if el.sous_titre %}<p class="chapo">{{ el.sous_titre }}</p>{% endif %}
-      {% if el.termes %}<p class="termes">{% for t in el.termes %}<a href="/{{ groupe.slug }}/{{ type.slug }}?{{ 'genre' if t.kind == 'genre' else 'categorie' }}={{ t.slug }}">{{ t.nom }}</a>{% endfor %}</p>{% endif %}
+{% set faits = [] %}{% set sections = [] %}
+{% for k, v in el.donnees.items() %}{% if v is string or v is number %}{% do faits.append((k, v)) %}{% else %}{% do sections.append((k, v)) %}{% endif %}{% endfor %}
+<div class="page" style="--c: {{ groupe.couleur }}">
+  <nav class="ariane" aria-label="Fil d'Ariane"><a href="/">Weball</a><a href="/{{ groupe.slug }}">{{ groupe.nom }}</a><a href="/{{ groupe.slug }}/{{ type.slug }}">{{ type.nom_pluriel }}</a><span>{{ el.titre }}</span></nav>
+  <article class="fiche">
+    <header class="fiche-tete">
+      {% if el.image %}<img class="fiche-image" src="{{ el.image }}" alt="{{ el.titre }}" onerror="this.remove()">{% endif %}
+      <div>
+        <p class="surtitre">{{ type.nom }}</p>
+        <h1>{{ el.titre }}</h1>
+        {% if el.sous_titre %}<p class="chapo">{{ el.sous_titre }}</p>{% endif %}
+        {% if el.termes %}<p class="termes">{% for t in el.termes %}<a href="/{{ groupe.slug }}/{{ type.slug }}?{{ 'genre' if t.kind == 'genre' else 'categorie' }}={{ t.slug }}">{{ t.nom }}</a>{% endfor %}</p>{% endif %}
+      </div>
+    </header>
+    <div class="fiche-corps">
+      <div class="fiche-texte">
+        {% if el.description %}{% for p in el.description.split('\n') if p.strip() %}<p>{{ p }}</p>{% endfor %}{% endif %}
+        {% for k, v in sections %}
+        <section class="fiche-section"><h2>{{ libelle(k) }}</h2>{{ valeur(v) }}</section>
+        {% endfor %}
+      </div>
+      {% if faits %}
+      <aside class="faits" aria-label="En bref">
+        <h2>En bref</h2>
+        <dl>{% for k, v in faits %}<dt>{{ libelle(k) }}</dt><dd>{{ valeur(v) }}</dd>{% endfor %}</dl>
+      </aside>
+      {% endif %}
     </div>
-  </header>
-  {% if el.description %}<div class="texte">{{ el.description|e|replace('\n', '<br>'|safe) }}</div>{% endif %}
-  {% if el.donnees %}
-  <dl class="donnees">{% for k, v in el.donnees.items() %}<dt>{{ k|replace('_', ' ')|capitalize }}</dt><dd>{{ valeur(v) }}</dd>{% endfor %}</dl>
-  {% endif %}
-</article>
+  </article>
+</div>
 {% endblock %}
