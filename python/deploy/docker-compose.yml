@@ -3,6 +3,8 @@
 #
 # - Base : base « weball » dans le conteneur ines-postgres existant (pas de nouveau serveur SQL).
 # - Exposition : uniquement via ines-nginx (server_name weball.weballone.com), aucun port publié.
+name: weball
+
 services:
   weball-web:
     build:
