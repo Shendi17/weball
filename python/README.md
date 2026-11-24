@@ -42,6 +42,6 @@ Tests : `pytest -q`
    et choisir le mot de passe de la base.
 2. Base et données : `bash python/deploy/import.sh /chemin/weball_contenu.sql` (crée la base `weball`
    dans `ines-postgres` si besoin, puis importe l'export sans comptes).
-3. Conteneur : `docker compose -f python/deploy/docker-compose.yml --env-file python/deploy/.env up -d --build`.
+3. Conteneur : `docker compose -p weball -f python/deploy/docker-compose.yml --env-file python/deploy/.env up -d --build`.
 4. DNS, certificat et vhost : suivre l'en-tête de `python/deploy/nginx-weball.conf`.
 5. Vérifier `https://weball.weballone.com/` puis `/sitemap.xml`, et déclarer le sitemap dans Google Search Console.
